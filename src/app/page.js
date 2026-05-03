@@ -3,11 +3,28 @@
 export default function Home() {
 
   const openInPiBrowser = () => {
-  const url = "https://jamiu.vercel.app";
+    const url = "https://jamiu.vercel.app";
 
-  // Try to open in Pi Browser
-  window.location.href = "pi://browser?url=" + encodeURIComponent(url);
+    const isPiBrowser = navigator.userAgent.toLowerCase().includes("pibrowser");
+
+    // If already inside Pi Browser, just open normally
+    if (isPiBrowser) {
+      window.location.href = url;
+      return;
+    }
+
+    // Try opening Pi Browser
+    window.location.href = `pi://browser?url=${encodeURIComponent(url)}`;
+
+    // Fallback if Pi Browser fails
+    setTimeout(() => {
+      window.open(url, "_blank");
+    }, 1500);
   };
+
+  const isPiBrowser =
+    typeof navigator !== "undefined" &&
+    navigator.userAgent.toLowerCase().includes("pibrowser");
 
   return (
     <main style={{
@@ -31,18 +48,21 @@ export default function Home() {
         
         <h2>🚀 My Web3 dApp</h2>
         <p style={{ fontSize: "14px", opacity: 0.8 }}>
-          Open inside wallet browser for best experience
+          {isPiBrowser
+            ? "You are inside Pi Browser ✅"
+            : "Open inside Pi Browser for best experience"}
         </p>
 
         <button
           onClick={openInPiBrowser}
+          disabled={isPiBrowser}
           style={{
             marginTop: "15px",
             padding: "12px 18px",
             borderRadius: "8px",
             border: "none",
-            cursor: "pointer",
-            background: "#4f7cff",
+            cursor: isPiBrowser ? "not-allowed" : "pointer",
+            background: isPiBrowser ? "#555" : "#4f7cff",
             color: "white",
             fontWeight: "bold"
           }}
