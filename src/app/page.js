@@ -10,22 +10,19 @@ const openInPiBrowser = () => {
     typeof navigator !== "undefined" &&
     navigator.userAgent.toLowerCase().includes("pi");
 
-  // If inside Pi Browser already → just open site
+  // 1. If already inside Pi Browser → open normally
   if (isPi) {
     window.location.href = url;
     return;
   }
 
-  // Try ONLY valid Pi deep link
+  // 2. Try Pi deep link
   const piLink = `pi://open_url?url=${encoded}`;
+  window.location.href = piLink;
 
-  const win = window.open(piLink, "_self");
-
-  // fallback if blocked after short delay
+  // 3. FINAL fallback (THIS is where your line goes)
   setTimeout(() => {
-    if (!win || win.closed) {
-      window.location.href = url;
-    }
+    window.location.href = url; // <-- THIS is your fallback line
   }, 1500);
 };
   return (
