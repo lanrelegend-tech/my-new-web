@@ -2,12 +2,11 @@
 
 export default function Home() {
 
-  const openInTrustWallet = () => {
+  const openInPiBrowser = () => {
   const url = "https://jamiu.vercel.app";
 
-    // tries to open inside Trust Wallet dApp browser
-    window.location.href =
-      "trust://open_url?url=" + encodeURIComponent(url);
+  // Try to open in Pi Browser
+  window.location.href = "pi://browser?url=" + encodeURIComponent(url);
   };
 
   return (
@@ -36,7 +35,7 @@ export default function Home() {
         </p>
 
         <button
-          onClick={openInTrustWallet}
+          onClick={openInPiBrowser}
           style={{
             marginTop: "15px",
             padding: "12px 18px",
@@ -48,7 +47,7 @@ export default function Home() {
             fontWeight: "bold"
           }}
         >
-          Open in Trust Wallet
+          Open in Pi Browser
         </button>
 
       </div>
