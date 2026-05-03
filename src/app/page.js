@@ -4,26 +4,19 @@ export default function Home() {
 
 const openInPiBrowser = () => {
   const url = "https://jamiu.vercel.app";
-  const encoded = encodeURIComponent(url);
 
   const isPi =
     typeof navigator !== "undefined" &&
     navigator.userAgent.toLowerCase().includes("pi");
 
-  // 1. If already inside Pi Browser → open normally
+  // If already inside Pi Browser
   if (isPi) {
     window.location.href = url;
     return;
   }
 
-  // 2. Try Pi deep link
-  const piLink = `pi://open_url?url=${encoded}`;
-  window.location.href = piLink;
-
-  // 3. FINAL fallback (THIS is where your line goes)
-  setTimeout(() => {
-    window.location.href = url; // <-- THIS is your fallback line
-  }, 1500);
+  // Always use HTTPS (Pi Browser handles it natively)
+  window.location.href = url;
 };
   return (
     <main style={{
