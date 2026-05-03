@@ -2,29 +2,52 @@
 
 export default function Home() {
 
-  const openInPiBrowser = () => {
+  const openInWalletBrowser = () => {
     const url = "https://jamiu.vercel.app";
+    const encoded = encodeURIComponent(url);
 
-    const isPiBrowser = navigator.userAgent.toLowerCase().includes("pibrowser");
+    const ua = navigator.userAgent.toLowerCase();
 
-    // If already inside Pi Browser, just open normally
-    if (isPiBrowser) {
+    // Pi Browser
+    if (ua.includes("pibrowser")) {
       window.location.href = url;
       return;
     }
 
-    // Try opening Pi Browser
-    window.location.href = `pi://browser?url=${encodeURIComponent(url)}`;
+    // Trust Wallet
+    if (ua.includes("trust")) {
+      window.location.href = `trust://open_url?url=${encoded}`;
+      return;
+    }
 
-    // Fallback if Pi Browser fails
+    // MetaMask
+    if (ua.includes("metamask")) {
+      window.location.href = `metamask://dapp/${url}`;
+      return;
+    }
+
+    // Phantom
+    if (ua.includes("phantom")) {
+      window.location.href = `phantom://browse/${url}`;
+      return;
+    }
+
+    // OKX Wallet
+    if (ua.includes("okx")) {
+      window.location.href = `okx://dapp?url=${encoded}`;
+      return;
+    }
+
+    // Fallback attempt (generic deep link)
+    window.location.href = `pi://browser?url=${encoded}`;
+
     setTimeout(() => {
       window.open(url, "_blank");
     }, 1500);
   };
 
-  const isPiBrowser =
-    typeof navigator !== "undefined" &&
-    navigator.userAgent.toLowerCase().includes("pibrowser");
+  const ua = typeof navigator !== "undefined" ? navigator.userAgent.toLowerCase() : "";
+  const isPiBrowser = ua.includes("pibrowser");
 
   return (
     <main style={{
@@ -49,25 +72,24 @@ export default function Home() {
         <h2>🚀 My Web3 dApp</h2>
         <p style={{ fontSize: "14px", opacity: 0.8 }}>
           {isPiBrowser
-            ? "You are inside Pi Browser ✅"
-            : "Open inside Pi Browser for best experience"}
+            ? "Wallet Browser detected ✅"
+            : "Open in your wallet browser for best experience"}
         </p>
 
         <button
-          onClick={openInPiBrowser}
-          disabled={isPiBrowser}
+          onClick={openInWalletBrowser}
           style={{
             marginTop: "15px",
             padding: "12px 18px",
             borderRadius: "8px",
             border: "none",
-            cursor: isPiBrowser ? "not-allowed" : "pointer",
-            background: isPiBrowser ? "#555" : "#4f7cff",
+            cursor: "pointer",
+            background: "#4f7cff",
             color: "white",
             fontWeight: "bold"
           }}
         >
-          Open in Pi Browser
+          Open dApp
         </button>
 
       </div>
