@@ -2,7 +2,7 @@
 
 export default function Home() {
 
- const openInPiBrowser = () => {
+const openInPiBrowser = () => {
   const url = "https://jamiu.vercel.app";
   const encoded = encodeURIComponent(url);
 
@@ -10,24 +10,21 @@ export default function Home() {
     typeof navigator !== "undefined" &&
     navigator.userAgent.toLowerCase().includes("pi");
 
-  // If already inside Pi Browser, open normally
+  // If already inside Pi Browser → just open normally
   if (isPi) {
     window.location.href = url;
     return;
   }
 
-  // Try Pi Browser deep links (some devices support one or the other)
-  window.location.href = `pi://open_url?url=${encoded}`;
+  // Try ONLY ONE Pi deep link (no chaining)
+  const piLink = `pi://open_url?url=${encoded}`;
 
-  // fallback attempt after short delay
+  const opened = window.location.assign(piLink);
+
+  // fallback ONLY if Pi fails completely
   setTimeout(() => {
-    window.location.href = `pi://browser?url=${encoded}`;
-
-    // final fallback to normal browser
-    setTimeout(() => {
-      window.open(url, "_blank");
-    }, 1200);
-  }, 1200);
+    window.location.href = url;
+  }, 2000);
 };
   return (
     <main style={{
