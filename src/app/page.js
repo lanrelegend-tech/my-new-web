@@ -2,53 +2,17 @@
 
 export default function Home() {
 
-  const openInWalletBrowser = () => {
-    const url = "https://jamiu.vercel.app";
-    const encoded = encodeURIComponent(url);
+ const openInPiBrowser = () => {
+  const url = "https://jamiu.vercel.app";
 
-    const ua = navigator.userAgent.toLowerCase();
+  const isPi = navigator.userAgent.toLowerCase().includes("pi");
 
-    // Pi Browser
-    if (ua.includes("pibrowser")) {
-      window.location.href = url;
-      return;
-    }
-
-    // Trust Wallet
-    if (ua.includes("trust")) {
-      window.location.href = `trust://open_url?url=${encoded}`;
-      return;
-    }
-
-    // MetaMask
-    if (ua.includes("metamask")) {
-      window.location.href = `metamask://dapp/${url}`;
-      return;
-    }
-
-    // Phantom
-    if (ua.includes("phantom")) {
-      window.location.href = `phantom://browse/${url}`;
-      return;
-    }
-
-    // OKX Wallet
-    if (ua.includes("okx")) {
-      window.location.href = `okx://dapp?url=${encoded}`;
-      return;
-    }
-
-    // Fallback attempt (generic deep link)
-    window.location.href = `pi://browser?url=${encoded}`;
-
-    setTimeout(() => {
-      window.open(url, "_blank");
-    }, 1500);
-  };
-
-  const ua = typeof navigator !== "undefined" ? navigator.userAgent.toLowerCase() : "";
-  const isPiBrowser = ua.includes("pibrowser");
-
+  if (isPi) {
+    window.location.href = "pi://browser?url=" + encodeURIComponent(url);
+  } else {
+    window.open(url, "_blank");
+  }
+};
   return (
     <main style={{
       display: "flex",
@@ -71,13 +35,11 @@ export default function Home() {
         
         <h2>🚀 My Web3 dApp</h2>
         <p style={{ fontSize: "14px", opacity: 0.8 }}>
-          {isPiBrowser
-            ? "Wallet Browser detected ✅"
-            : "Open in your wallet browser for best experience"}
+          Open inside wallet browser for best experience
         </p>
 
         <button
-          onClick={openInWalletBrowser}
+          onClick={openInPiBrowser}
           style={{
             marginTop: "15px",
             padding: "12px 18px",
@@ -89,7 +51,7 @@ export default function Home() {
             fontWeight: "bold"
           }}
         >
-          Open dApp
+          Open in Pi Browser
         </button>
 
       </div>
