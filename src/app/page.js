@@ -1,31 +1,6 @@
 "use client";
 
 export default function Home() {
-
-const openInPiBrowser = () => {
-  const url = "https://jamiu.vercel.app";
-  const encoded = encodeURIComponent(url);
-
-  const isPi =
-    typeof navigator !== "undefined" &&
-    navigator.userAgent.toLowerCase().includes("pi");
-
-  // If already inside Pi Browser → just open normally
-  if (isPi) {
-    window.location.href = url;
-    return;
-  }
-
-  // Try ONLY ONE Pi deep link (no chaining)
-  const piLink = `pi://open_url?url=${encoded}`;
-
-  const opened = window.location.assign(piLink);
-
-  // fallback ONLY if Pi fails completely
-  setTimeout(() => {
-    window.location.href = url;
-  }, 2000);
-};
   return (
     <main style={{
       display: "flex",
@@ -47,12 +22,12 @@ const openInPiBrowser = () => {
       }}>
         
         <h2>🚀 My Web3 dApp</h2>
+
         <p style={{ fontSize: "14px", opacity: 0.8 }}>
           Open inside wallet browser for best experience
         </p>
 
         <button
-          onClick={openInPiBrowser}
           style={{
             marginTop: "15px",
             padding: "12px 18px",
@@ -66,6 +41,21 @@ const openInPiBrowser = () => {
         >
           Open in Pi Browser
         </button>
+
+        {/* Clickable Pi link */}
+        <a
+          href="Pi://jamiu.vercel.app"
+          style={{
+            display: "block",
+            marginTop: "12px",
+            fontSize: "12px",
+            opacity: 0.7,
+            color: "#7aa2ff",
+            textDecoration: "underline"
+          }}
+        >
+          Pi://jamiu.vercel.app
+        </a>
 
       </div>
 
