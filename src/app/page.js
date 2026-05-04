@@ -28,6 +28,7 @@ export default function Home() {
         </p>
 
         <button
+          onClick={() => window.location.href = "Pi://jamiu.vercel.app"}
           style={{
             marginTop: "15px",
             padding: "12px 18px",
@@ -41,21 +42,6 @@ export default function Home() {
         >
           Open in Pi Browser
         </button>
-
-        {/* Clickable Pi link */}
-        <a
-          href="Pi://jamiu.vercel.app"
-          style={{
-            display: "block",
-            marginTop: "12px",
-            fontSize: "12px",
-            opacity: 0.7,
-            color: "#7aa2ff",
-            textDecoration: "underline"
-          }}
-        >
-          Pi://jamiu.vercel.app
-        </a>
 
       </div>
 
